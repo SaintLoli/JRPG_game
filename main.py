@@ -1,10 +1,9 @@
 import pygame
 import pytmx
 import pygame_gui
-from global_map import *
 import sys
 import os
-
+from global_map import *
 
 pygame.init()
 size = width, height = 660, 660
@@ -190,6 +189,9 @@ if __name__ == '__main__':
 
                 if event.key == 101:
                     hero.interact()
+
+                if event.key == pygame.K_F5:
+                    ...
         if not hero.check_camera_x():
             render = (5 if hero.coord[0] <= 5 else 24, hero.coord[1])
         elif not hero.check_camera_y():
