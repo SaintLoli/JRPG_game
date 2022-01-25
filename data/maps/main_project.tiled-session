@@ -1,0 +1,37 @@
+{
+    "activeFile": "house.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "file.lastUsedOpenFilter": "Все файлы (*)",
+    "fileStates": {
+        "footpath.tmx": {
+            "scale": 0.3384375,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 478.67036011080324,
+                "y": 478.6703601108033
+            }
+        },
+        "house.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 340,
+                "y": 223.99999999999997
+            }
+        },
+        "test.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "openFiles": [
+        "footpath.tmx",
+        "house.tmx"
+    ],
+    "project": "main_project.tiled-project",
+    "recentFiles": [
+        "footpath.tmx",
+        "house.tmx"
+    ]
+}

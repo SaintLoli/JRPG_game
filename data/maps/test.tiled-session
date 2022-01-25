@@ -1,0 +1,25 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "Все файлы (*)",
+    "fileStates": {
+        "footpath.tmx": {
+            "scale": 0.3384375,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 481.62511542012925,
+                "y": 481.62511542012925
+            }
+        },
+        "test.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "openFiles": [
+    ],
+    "project": "",
+    "recentFiles": [
+        "footpath.tmx"
+    ]
+}
