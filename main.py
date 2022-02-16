@@ -1,23 +1,12 @@
 import pygame
 import pytmx
 import pygame_gui
-import sys
-import os
 from global_map import *
+from menu import load_image, menu_call
 
 pygame.init()
 size = width, height = 660, 660
 screen = pygame.display.set_mode(size)
-
-
-def load_image(name, colorkey=None):
-    fullname = os.path.join(name)
-    # если файл не существует, то выходим
-    if not os.path.isfile(fullname):
-        print(f"Файл с изображением '{fullname}' не найден")
-        sys.exit()
-    image = pygame.image.load(fullname)
-    return image
 
 
 class Map:
@@ -62,7 +51,7 @@ class Hero(pygame.sprite.Sprite):
         self.rect.y = 60 * 5 - 20
 
     def moving(self, key):
-        if key.key == 119:
+        if key == 119:
             self.sprites = self.frames[9:]
             if self.get_next_tile((self.coord[0], self.coord[1] - 1)):
                 '''self.rect.y -= now_map.tile_size'''
@@ -71,7 +60,7 @@ class Hero(pygame.sprite.Sprite):
                 self.coord = (self.coord[0], self.coord[1] - 1)
                 if not self.check_camera_y() and self.coord[1] >= 24:
                     self.rect.y -= 60
-        if key.key == 115:
+        if key == 115:
             self.sprites = self.frames[0:3]
             if self.get_next_tile((self.coord[0], self.coord[1] + 1)):
                 '''self.rect.y += now_map.tile_size'''
@@ -80,7 +69,7 @@ class Hero(pygame.sprite.Sprite):
                 self.coord = (self.coord[0], self.coord[1] + 1)
                 if not self.check_camera_y() and self.coord[1] <= 5:
                     self.rect.y += 60
-        if key.key == 97:
+        if key == 97:
             self.sprites = self.frames[3:6]
             if self.get_next_tile((self.coord[0] - 1, self.coord[1])):
                 '''self.rect.x -= now_map.tile_size'''
@@ -89,7 +78,7 @@ class Hero(pygame.sprite.Sprite):
                 self.coord = (self.coord[0] - 1, self.coord[1])
                 if not self.check_camera_x() and self.coord[0] >= 24:
                     self.rect.x -= 60
-        if key.key == 100:
+        if key == 100:
             self.sprites = self.frames[6:9]
             if self.get_next_tile((self.coord[0] + 1, self.coord[1])):
                 '''self.rect.x += now_map.tile_size'''
@@ -167,7 +156,10 @@ class Hero(pygame.sprite.Sprite):
 
 
 if __name__ == '__main__':
+    menu_call()
     running = True
+    HERO_WALK = pygame.USEREVENT + 1
+    pygame.time.set_timer(HERO_WALK, 95)
 
     manager = pygame_gui.UIManager((660, 660))
     box = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect((0, 0), (660, 100)), manager=manager,
@@ -176,7 +168,7 @@ if __name__ == '__main__':
     fps = 60
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
-    hero = Hero(6, 7, load_image("data/sprites/hero1.png", True), 3, 4, 32, 48)
+    hero = Hero(6, 7, load_image("data/sprites/hero5.png", True), 3, 4, 32, 48)
     location = Map(LOCATION)
 
     while running:
@@ -184,20 +176,28 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.KEYDOWN:
-                if event.key in [115, 100, 97, 119]:
-                    hero.moving(event)
-
                 if event.key == 101:
                     hero.interact()
 
                 if event.key == pygame.K_F5:
                     ...
+
+            if event.type == HERO_WALK:
+                if pygame.key.get_pressed()[pygame.K_d]:
+                    hero.moving(pygame.K_d)
+                if pygame.key.get_pressed()[pygame.K_a]:
+                    hero.moving(pygame.K_a)
+                if pygame.key.get_pressed()[pygame.K_w]:
+                    hero.moving(pygame.K_w)
+                if pygame.key.get_pressed()[pygame.K_s]:
+                    hero.moving(pygame.K_s)
         if not hero.check_camera_x():
             render = (5 if hero.coord[0] <= 5 else 24, hero.coord[1])
         elif not hero.check_camera_y():
             render = (hero.coord[0], 5 if hero.coord[1] <= 5 else 24)
         else:
             render = hero.coord
+
         location.render(render)
 
         manager.update(fps)
@@ -206,7 +206,5 @@ if __name__ == '__main__':
         all_sprites.draw(screen)
         pygame.display.flip()
         clock.tick(fps)
-
-
 
     pygame.quit()
