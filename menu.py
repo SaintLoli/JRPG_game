@@ -2,6 +2,7 @@ import pygame
 import pygame_gui
 import os
 import sys
+from DBWorker import *
 
 
 def load_image(name, colorkey=None):
@@ -23,13 +24,17 @@ def menu_call():
     running = True
     manager = pygame_gui.UIManager((660, 660))
 
-    begin = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 330), (220, 40)), text='Начать',
+    begin = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 330), (220, 40)), text='Начать новую игру',
                                          manager=manager)
-    options = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 390), (220, 40)), text='Опции',
-                                           manager=manager)
-    exit_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 450), (220, 40)), text='Выйти из игры',
+    load_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 390), (220, 40)), text='Продолжить',
                                              manager=manager)
+    if not InfoAboutHero.is_save():
+        load_game.disable()
 
+    options = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 450), (220, 40)), text='Опции',
+                                           manager=manager)
+    exit_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 510), (220, 40)), text='Выйти из игры',
+                                             manager=manager)
 
     clock = pygame.time.Clock()
 
@@ -37,13 +42,17 @@ def menu_call():
         time_delta = clock.tick(60) / 1000.0
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                sys.exit()
 
             if event.type == pygame_gui.UI_BUTTON_PRESSED:
                 if event.ui_element == exit_game:
                     sys.exit()
 
                 if event.ui_element == begin:
+                    InfoAboutHero.reset_game()
+                    running = False
+
+                if event.ui_element == load_game:
                     running = False
 
                 if event.ui_element == options:
@@ -56,3 +65,6 @@ def menu_call():
         manager.draw_ui(screen)
 
         pygame.display.update()
+
+
+InfoAboutHero = DBWork()
