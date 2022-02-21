@@ -6,11 +6,11 @@ class DBWork:
         self.con = sqlite3.connect('data/parameters.db')
         self.cur = self.con.cursor()
 
-    def reset_game(self):
+    def reset_game(self, h1, h2):
         if not self.is_save():
-            self.cur.execute("INSERT INTO saveinfo(location, coord_x, coord_y) VALUES ('house', 6, 7)")
+            self.cur.execute(f"INSERT INTO saveinfo(location, coord_x, coord_y, hero1, hero2) VALUES ('house', 6, 7, '{h1}', '{h2}')")
         else:
-            self.cur.execute("UPDATE saveinfo SET location = 'house', coord_x = 6, coord_y = 7")
+            self.cur.execute(f"UPDATE saveinfo SET location = 'house', coord_x = 6, coord_y = 7, hero1 = '{h1}', hero2 = '{h2}'")
         self.con.commit()
 
     def save_game(self, loc, coord):
@@ -28,6 +28,9 @@ class DBWork:
 
     def get_location(self):
         return self.cur.execute('SELECT location FROM saveinfo').fetchone()[0]
+
+    def get_heroes(self):
+        return self.cur.execute('SELECT hero1, hero2 from saveinfo').fetchone()
 
     def get_all_info(self):
         return self.cur.execute('SELECT * FROM saveinfo').fetchone()

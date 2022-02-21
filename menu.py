@@ -8,13 +8,13 @@ def menu_call():
     MAIN_MENU = load_image('data/menu.png')
 
     running = True
-    manager = pygame_gui.UIManager((660, 660))
+    manager = pygame_gui.UIManager((660, 660), 'theme.json')
 
     begin = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 330), (220, 40)), text='Начать новую игру',
                                          manager=manager)
     load_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 390), (220, 40)), text='Продолжить',
                                              manager=manager)
-    if not InfoAboutHero.is_save():
+    if not PlayerInfo.is_save():
         load_game.disable()
 
     options = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 450), (220, 40)), text='Опции',
@@ -35,12 +35,14 @@ def menu_call():
                     sys.exit()
 
                 if event.ui_element == begin:
-                    InfoAboutHero.reset_game()
-                    running = False
-                    open_hero_creation_window()
+                    hero1 = open_hero_creation_window(1)
+                    hero2 = open_hero_creation_window(2, delete=hero1)
+                    PlayerInfo.reset_game(hero1, hero2)
+                    return hero1, hero2
 
                 if event.ui_element == load_game:
-                    running = False
+                    k = PlayerInfo.get_heroes()
+                    return k[0], k[1]
 
                 if event.ui_element == options:
                     print('В скором времени здесь будут опции')
@@ -54,4 +56,4 @@ def menu_call():
         pygame.display.update()
 
 
-InfoAboutHero = DBWork()
+PlayerInfo = DBWork()

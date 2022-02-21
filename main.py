@@ -46,17 +46,20 @@ class Hero(pygame.sprite.Sprite):
         self.coord = coord
         self.key = ''
 
-        self.frames = []
-        self.cut_sheet(sheet, columns, rows)
-        self.sprites = self.frames[0:3]
-        self.cur_frame = 0
-        self.image = self.frames[self.cur_frame]
-        self.update()
+        self.animating(sheet, columns, rows)
         self.rect = self.rect.move(xs, ys)
 
         self.rect = self.image.get_rect()
         self.rect.x = 60 * 5
         self.rect.y = 60 * 5 - 20
+
+    def animating(self, sheet, columns, rows, rect=(0, 0)):
+        self.frames = []
+        self.cut_sheet(sheet, columns, rows, rect)
+        self.sprites = self.frames[0:3]
+        self.cur_frame = 0
+        self.image = self.frames[self.cur_frame]
+        self.update()
 
     def moving(self, key):
         if key == 119:
@@ -97,6 +100,9 @@ class Hero(pygame.sprite.Sprite):
                     self.rect.x += 60
 
         self.get_prop(self.coord[0], self.coord[1])
+
+        if box.visible:
+            box.visible = 0
 
         self.update()
 
@@ -153,7 +159,7 @@ class Hero(pygame.sprite.Sprite):
                 location = Map(GLOBAL_MAP[location.location]['S'][0])
             elif position[1] == -1:
                 self.coord = GLOBAL_MAP[location.location]['N'][1]
-                self.rect.x, self.rect.y = 60 * 5, height - 20
+                self.rect.x, self.rect.y = 60 * 5, 580
                 location = Map(GLOBAL_MAP[location.location]['N'][0])
             elif position[0] == -1:
                 self.coord = GLOBAL_MAP[location.location]['W'][1]
@@ -174,8 +180,8 @@ class Hero(pygame.sprite.Sprite):
     def check_camera_y(self):
         return 0 < self.coord[1] - 5 and self.coord[1] + 6 < 30
 
-    def cut_sheet(self, sheet, columns, rows):
-        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
+    def cut_sheet(self, sheet, columns, rows, rect):
+        self.rect = pygame.Rect(rect[0], rect[1], sheet.get_width() // columns,
                                 sheet.get_height() // rows)
         for j in range(rows):
             for i in range(columns):
@@ -189,21 +195,22 @@ class Hero(pygame.sprite.Sprite):
 
 
 if __name__ == '__main__':
-    menu_call()
+    list_with_characters = menu_call()
 
     running = True
+    i = 0
     HERO_WALK = pygame.USEREVENT + 1
     pygame.time.set_timer(HERO_WALK, 95)
 
-    manager = pygame_gui.UIManager((660, 660))
+    manager = pygame_gui.UIManager((660, 660), 'theme.json')
     box = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect((0, 0), (660, 100)), manager=manager,
                                         html_text='', visible=0)
 
     fps = 60
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
-    hero = Hero(InfoAboutHero.get_coord(), load_image("data/sprites/hero1.png", True), 3, 4, 32, 48)
-    location = Map(InfoAboutHero.get_location())
+    HERO = Hero(PlayerInfo.get_coord(), load_image(f"data/sprites/{list_with_characters[0]}.png", True), 3, 4, 32, 48)
+    location = Map(PlayerInfo.get_location())
 
     while running:
         for event in pygame.event.get():
@@ -211,25 +218,30 @@ if __name__ == '__main__':
                 running = False
             if event.type == pygame.KEYDOWN:
                 if event.key == 101:
-                    hero.interact()
+                    HERO.interact()
+
+                if event.key == 113:
+                    i += 1
+                    HERO.animating(load_image(f"data/sprites/{list_with_characters[i % 2]}.png", True), 3, 4, rect=(HERO.rect.x, HERO.rect.y))
+                    print(HERO.rect)
 
                 if event.key == pygame.K_F5:
-                    InfoAboutHero.save_game(location.location, hero.coord)
+                    PlayerInfo.save_game(location.location, HERO.coord)
                 if event.key == pygame.K_F9:
-                    location = Map(InfoAboutHero.get_location())
-                    hero.coord = InfoAboutHero.get_coord()
+                    location = Map(PlayerInfo.get_location())
+                    HERO.coord = PlayerInfo.get_coord()
 
             if event.type == HERO_WALK:
                 if pygame.key.get_pressed()[pygame.K_d]:
-                    hero.moving(pygame.K_d)
+                    HERO.moving(pygame.K_d)
                 if pygame.key.get_pressed()[pygame.K_a]:
-                    hero.moving(pygame.K_a)
+                    HERO.moving(pygame.K_a)
                 if pygame.key.get_pressed()[pygame.K_w]:
-                    hero.moving(pygame.K_w)
+                    HERO.moving(pygame.K_w)
                 if pygame.key.get_pressed()[pygame.K_s]:
-                    hero.moving(pygame.K_s)
+                    HERO.moving(pygame.K_s)
 
-        location.render(hero.coord)
+        location.render(HERO.coord)
 
         manager.update(fps)
         manager.draw_ui(screen)
