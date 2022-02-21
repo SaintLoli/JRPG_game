@@ -1,18 +1,4 @@
-import pygame
-import pygame_gui
-import os
-import sys
-from DBWorker import *
-
-
-def load_image(name, colorkey=None):
-    fullname = os.path.join(name)
-    # если файл не существует, то выходим
-    if not os.path.isfile(fullname):
-        print(f"Файл с изображением '{fullname}' не найден")
-        sys.exit()
-    image = pygame.image.load(fullname)
-    return image
+from create_hero import *
 
 
 def menu_call():
@@ -51,6 +37,7 @@ def menu_call():
                 if event.ui_element == begin:
                     InfoAboutHero.reset_game()
                     running = False
+                    open_hero_creation_window()
 
                 if event.ui_element == load_game:
                     running = False

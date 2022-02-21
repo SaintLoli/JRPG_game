@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "city.tmx",
+    "activeFile": "road_to_the_cave.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -50,11 +50,11 @@
             }
         },
         "road_to_the_cave.tmx": {
-            "scale": 0.5,
+            "scale": 0.25,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 163,
-                "y": 504
+                "x": 598,
+                "y": 240
             }
         },
         "test.tsx": {
@@ -71,7 +71,7 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 30,
     "openFiles": [
-        "city.tmx"
+        "road_to_the_cave.tmx"
     ],
     "project": "main_project.tiled-project",
     "property.type": "string",

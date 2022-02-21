@@ -40,7 +40,6 @@ class Map:
             i = 0
 
 
-
 class Hero(pygame.sprite.Sprite):
     def __init__(self, coord, sheet, columns, rows, xs, ys):
         super().__init__(all_sprites)
@@ -107,19 +106,20 @@ class Hero(pygame.sprite.Sprite):
                 text = self.get_prop(x, self.coord[1])
                 if text:
                     try:
-                        box.set_text(text)
+                        box.set_text(f'<effect id=test>{text}</effect>')
                     finally:
-                        box.set_text(text)
+                        box.set_text(f'<effect id=test>{text}</effect>')
                     box.visible = 1
 
             for y in range(self.coord[1] - 1, self.coord[1] + 2, 2):
                 text = self.get_prop(self.coord[0], y)
                 if text:
                     try:
-                        box.set_text(text)
+                        box.set_text(f'<effect id=test>{text}</effect>')
                     finally:
-                        box.set_text(text)
+                        box.set_text(f'<effect id=test>{text}</effect>')
                     box.visible = 1
+            box.set_active_effect(pygame_gui.TEXT_EFFECT_TYPING_APPEAR)
         else:
             box.visible = 0
 
@@ -202,7 +202,7 @@ if __name__ == '__main__':
     fps = 60
     clock = pygame.time.Clock()
     all_sprites = pygame.sprite.Group()
-    hero = Hero(InfoAboutHero.get_coord(), load_image("data/sprites/hero8.png", True), 3, 4, 32, 48)
+    hero = Hero(InfoAboutHero.get_coord(), load_image("data/sprites/hero1.png", True), 3, 4, 32, 48)
     location = Map(InfoAboutHero.get_location())
 
     while running:

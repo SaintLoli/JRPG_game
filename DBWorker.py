@@ -23,6 +23,9 @@ class DBWork:
     def get_coord(self):
         return self.cur.execute('SELECT coord_x, coord_y FROM saveinfo').fetchone()
 
+    def get_info_about_class(self, hero_class):
+        return self.cur.execute(f'SELECT description FROM classinfo WHERE class="{hero_class}"').fetchone()[0]
+
     def get_location(self):
         return self.cur.execute('SELECT location FROM saveinfo').fetchone()[0]
 
