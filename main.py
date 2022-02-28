@@ -1,6 +1,8 @@
 import pytmx
 from global_map import *
-from menu import *
+from global_menu import *
+from local_menu import LocalMenu
+from battle import BattleWindow
 
 pygame.init()
 size = width, height = 660, 660
@@ -51,7 +53,7 @@ class Hero(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect()
         self.rect.x = 60 * 5
-        self.rect.y = 60 * 5 - 20
+        self.rect.y = 60 * 5 - 35
 
     def animating(self, sheet, columns, rows, rect=(0, 0)):
         self.frames = []
@@ -103,7 +105,6 @@ class Hero(pygame.sprite.Sprite):
 
         if box.visible:
             box.visible = 0
-
         self.update()
 
     def interact(self):
@@ -159,7 +160,7 @@ class Hero(pygame.sprite.Sprite):
                 location = Map(GLOBAL_MAP[location.location]['S'][0])
             elif position[1] == -1:
                 self.coord = GLOBAL_MAP[location.location]['N'][1]
-                self.rect.x, self.rect.y = 60 * 5, 580
+                self.rect.x, self.rect.y = 60 * 5, 565
                 location = Map(GLOBAL_MAP[location.location]['N'][0])
             elif position[0] == -1:
                 self.coord = GLOBAL_MAP[location.location]['W'][1]
@@ -203,7 +204,7 @@ if __name__ == '__main__':
     pygame.time.set_timer(HERO_WALK, 95)
 
     manager = pygame_gui.UIManager((660, 660), 'theme.json')
-    box = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect((0, 0), (660, 100)), manager=manager,
+    box = pygame_gui.elements.UITextBox(relative_rect=pygame.Rect((0, 0), (660, 110)), manager=manager,
                                         html_text='', visible=0)
 
     fps = 60
@@ -222,14 +223,18 @@ if __name__ == '__main__':
 
                 if event.key == 113:
                     i += 1
-                    HERO.animating(load_image(f"data/sprites/{list_with_characters[i % 2]}.png", True), 3, 4, rect=(HERO.rect.x, HERO.rect.y))
-                    print(HERO.rect)
+                    HERO.animating(load_image(f"data/sprites/{list_with_characters[i % 4]}.png", True), 3, 4, rect=(HERO.rect.x, HERO.rect.y))
+
+                if event.key == pygame.K_ESCAPE:
+                    LocalMenu()
 
                 if event.key == pygame.K_F5:
                     PlayerInfo.save_game(location.location, HERO.coord)
                 if event.key == pygame.K_F9:
                     location = Map(PlayerInfo.get_location())
                     HERO.coord = PlayerInfo.get_coord()
+                if event.key == 98:
+                    BattleWindow()
 
             if event.type == HERO_WALK:
                 if pygame.key.get_pressed()[pygame.K_d]:

@@ -12,6 +12,7 @@ def menu_call():
 
     begin = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 330), (220, 40)), text='Начать новую игру',
                                          manager=manager)
+
     load_game = pygame_gui.elements.UIButton(relative_rect=pygame.Rect((220, 390), (220, 40)), text='Продолжить',
                                              manager=manager)
     if not PlayerInfo.is_save():
@@ -35,14 +36,17 @@ def menu_call():
                     sys.exit()
 
                 if event.ui_element == begin:
-                    hero1 = open_hero_creation_window(1)
-                    hero2 = open_hero_creation_window(2, delete=hero1)
-                    PlayerInfo.reset_game(hero1, hero2)
-                    return hero1, hero2
+                    heroes = []
+                    for i in range(1, 5):
+                        hero, hero_class, name, hp, mp = open_hero_creation_window(i, delete=heroes)
+                        PlayerInfo.set_about_characters(hero, hero_class, name, i, hp, mp)
+                        heroes.append(hero)
+
+                    PlayerInfo.reset_game(*heroes)
+                    return heroes
 
                 if event.ui_element == load_game:
-                    k = PlayerInfo.get_heroes()
-                    return k[0], k[1]
+                    return PlayerInfo.get_heroes()
 
                 if event.ui_element == options:
                     print('В скором времени здесь будут опции')

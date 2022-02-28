@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "road_to_the_cave.tmx",
+    "activeFile": "footpath.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -27,7 +27,7 @@
         },
         "footpath.tmx": {
             "scale": 0.75,
-            "selectedLayer": 2,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 243.33333333333331,
                 "y": 286.66666666666663
@@ -42,19 +42,19 @@
             }
         },
         "house.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 750,
-                "y": 255.99999999999997
+                "x": 74.33333333333333,
+                "y": 434
             }
         },
         "road_to_the_cave.tmx": {
-            "scale": 0.25,
-            "selectedLayer": 2,
+            "scale": 1.5,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 598,
-                "y": 240
+                "x": 71,
+                "y": 384.66666666666663
             }
         },
         "test.tsx": {
@@ -71,16 +71,16 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 30,
     "openFiles": [
-        "road_to_the_cave.tmx"
+        "footpath.tmx"
     ],
     "project": "main_project.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "footpath.tmx",
+        "house.tmx",
         "road_to_the_cave.tmx",
         "footpath2.tmx",
         "city.tmx",
-        "house.tmx",
-        "footpath.tmx",
         "castle.tmx",
         "test.tsx",
         "testtileset.tsx"
