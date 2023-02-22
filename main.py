@@ -18,7 +18,7 @@ class Map:
         self.height = self.map.height
         self.tile_size = 60
 
-    def render(self, args=()):
+    def render(self, args=()): #hfkdhfkdhfkhk
         j, i = 0, 0
         args = list(args)
         if args[0] + 5 > 29:
